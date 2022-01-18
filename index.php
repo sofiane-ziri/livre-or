@@ -19,35 +19,27 @@ session_start();
 <body>
 <?php
 include "../livre-or/header.php"
-?>
-    <p>Bienvenu dans le livre d'or</p>  
+?> 
 <main class="main">
     <?php
-  
-        $req="SELECT utilisateurs.prenom,`commentaire`,`date` FROM commentaires LEFT OUTER JOIN utilisateurs ON utilisateurs.id=commentaires.id_utilisateur"     ;
-        $query=mysqli_query($db,$req);
-        $results=mysqli_fetch_all($query);
-        foreach($results as $key=>$values){
-            echo "<div class='card'><div class='card-body'>";
-            foreach($values as $key=>$value){
-                if($key==0){
-                    echo "<h5 class='card-title'>Posté par: ";
-                    echo $value;
-                    echo "</h5>";
+      $check = $bdd->prepare('SELECT utilisateurs.prenom,`commentaire`,`date` FROM commentaires JOIN utilisateurs ON utilisateurs.id = commentaires.id_utilisateur');
+      $check->execute();
+      $data = $check->fetchAll();
+    echo "<div class='card'><div class='card-body'>";
+    for($i=0;isset($data[$i]);$i++){
+     echo "<h5 class='card-title'>Posté par: ";
+     echo $data[$i]['prenom'];
+     echo "</h5>";
 
-                }
-                if($key==1){
-                    echo "<h6 class='card-subtitle mb-2 text-muted'>Commentaire:</h6><p class='card-text'>".$value."</p>";
+     echo "<h6 class='card-title'>Commentaire: ";
+     echo $data[$i]['commentaire'];            
+     echo "</h6>";
+     
+     echo "<h6 class='card-title'>Posté le : ";
+     echo $data[$i]['date'];            
+     echo "</h6>";
 
-                }
-                if($key==2){
-                    echo "<footer class='blockquote-footer'>Posté le : ".$value."</footer>";
-                }
-            }
-            echo "</div>";
-            echo "</div>";
-        }
-
+    }
 
 
     ?>

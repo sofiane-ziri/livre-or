@@ -38,8 +38,6 @@ if ($_SESSION['user']['id'] == 1) {
                             <td><input type="text" name="email" class="form-control" value="<?= $data[$i]['login'] ?>"></td>
                             <td><input type="text" name="prenom" class="form-control" value="<?= $data[$i]['prenom'] ?>"></td>
                             <td><input type="text" name="nom" class="form-control" value="<?= $data[$i]['nom'] ?>"></td>
-                            <td><input type="text" name="commentaire" class="form-control" value="<?= $data[$i]['commentaire'] ?>"></td>
-
                             <td>
                                 <button type="submit" class="btn btn-info btn-lg" name="update" value="<?= $data[$i]['id'] ?>">Modifier</button>
                             </td>
@@ -108,30 +106,29 @@ if ($_SESSION['user']['id'] == 1) {
                     </div>
                 </form>
                 <main class="main">
-        <?php
-        if (isset($_SESSION['user'])) { ?>
-            <form action='commentaire.php' method='get'>
-                <label for='textarea'>Entrez votre commentaire</label>
-                <textarea id='textarea' name='textarea'></textarea>
-                <input type='submit' value='envoyer le commentaire' name='submit'>
-            </form><?php
-            if (isset($_GET['submit'])) {
-                foreach ($_GET as $key => $value) {
-                    if ($key == "textarea") {
-                        $commentaire = $value;
-                    }
-                }
-                
-                $date = date("Y/m/d H:i:s");
-                $insert = $bdd->prepare("INSERT INTO `commentaires`(`commentaire`,`id_utilisateur`,`date`) VALUES ('{$commentaire}','{$_SESSION['user']['id']}','{$date}')");
-                var_dump($insert);
-                $insert->execute();
-                
-            }
-        }
+                    <?php
+                    if (isset($_SESSION['user'])) { ?>
+                        <form action='commentaire.php' method='get'>
+                            <label for='textarea'>Entrez votre commentaire</label>
+                            <textarea id='textarea' name='textarea'></textarea>
+                            <input type='submit' value='envoyer le commentaire' name='submit'>
+                        </form><?php
+                                if (isset($_GET['submit'])) {
+                                    foreach ($_GET as $key => $value) {
+                                        if ($key == "textarea") {
+                                            $commentaire = $value;
+                                        }
+                                    }
 
-        ?>
-    </main>
+                                    $date = date("Y/m/d H:i:s");
+                                    $insert = $bdd->prepare("INSERT INTO `commentaires`(`commentaire`,`id_utilisateur`,`date`) VALUES ('{$commentaire}','{$_SESSION['user']['id']}','{$date}')");
+                                    var_dump($insert);
+                                    $insert->execute();
+                                }
+                            }
+
+                                ?>
+                </main>
                 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
